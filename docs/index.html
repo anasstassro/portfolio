@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анастасия Роженкова — дизайнер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Days+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root{
+  --bg:#050505;--text:#ffffff;--muted:#cfcfcf;--accent:#ff4d00;
+  --brown:#4d382d;--brown2:#5b4e44;--art:#8a7e73;--gray:#d9d9d9;--line:#242424;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --font-main:'Montserrat',sans-serif;--font-head:'Days One',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--text);font-family:var(--font-main);font-weight:400;font-size:15px;overflow-x:hidden}
+body.loading{overflow:hidden}
+
+.hero-title,.sec-title{font-family:var(--font-head);font-weight:200}
+body.modal-open{overflow:hidden}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:#2e2e2e;border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+a{color:inherit;text-decoration:none}ul{list-style:none}
+button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer}
+img,svg{display:block}.container{max-width:1160px;margin:0 auto;padding:0 24px;width:100%}
+
+@media (pointer:fine){*{cursor:none !important}}
+.cursor-dot{position:fixed;left:0;top:0;z-index:99999;pointer-events:none;width:16px;height:16px;border-radius:50%;background:var(--accent);box-shadow:0 0 20px rgba(255,77,0,.8),0 0 40px rgba(255,77,0,.4);opacity:0;transition:opacity .3s ease,width .3s var(--ease),height .3s var(--ease),background .3s ease;will-change:transform;mix-blend-mode:screen}
+.cursor-dot.on{opacity:1}
+.cursor-dot.grow{width:44px;height:44px;background:rgba(255,77,0,.85);box-shadow:0 0 30px rgba(255,77,0,.9),0 0 60px rgba(255,77,0,.5)}
+
+/* ============ MARQUEE STRIP (ЛЕГКИЙ ШРИФТ) ============ */
+.marquee-wrapper {
+  width: 100%;
+  height: 40px;
+  background: var(--accent); /* Рыжий фон */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 99; 
+  white-space: nowrap;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.marquee-inner {
+  display: flex;
+  animation: scroll-left 15s linear infinite;
+}
+
+.marquee-item {
+  display: inline-block;
+  padding-right: 50px; /* Расстояние между повторами */
+  font-family: var(--font-head);
+  font-size: 16px;
+  color: #fff; /* Белый текст на рыжем фоне */
+  text-transform: uppercase;
+  letter-spacing: 2px; /* Увеличен интервал для легкой читаемости */
+  font-weight: 300; /* ИЗМЕНЕНИЕ: Было bold, стало 300 (Light) */
+  line-height: 40px; /* Вертикальное центрирование внутри высоты блока */
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============ PAGE LOADER ============ */
+.page-loader{
+  position:fixed;inset:0;z-index:999999;
+  background:#050505;
+  display:flex;align-items:center;justify-content:center;
+  opacity:1;visibility:visible;
+  transition:opacity .55s ease,visibility 0s linear .55s;
+}
+.page-loader.hidden{
+  opacity:0;visibility:hidden;
+  transition:opacity .55s ease;
+}
+.loader-inner{text-align:center;padding:24px}
+.loader-logo{
+  font-family:var(--font-head);
+  font-size:clamp(38px,6vw,64px);
+  line-height:1;
+  color:#fff;
+  margin-bottom:22px;
+  letter-spacing:.08em;
+}
+.loader-bar{
+  width:min(260px,70vw);
+  height:2px;
+  background:#242424;
+  border-radius:999px;
+  overflow:hidden;
+  margin:0 auto;
+}
+.loader-bar span{
+  display:block;width:40%;height:100%;
+  background:var(--accent);
+  border-radius:999px;
+  animation:loaderMove 1.15s ease-in-out infinite;
+}
+@keyframes loaderMove{
+  0%{transform:translateX(-130%)}
+  100%{transform:translateX(330%)}
+}
+.loader-text{
+  margin-top:16px;
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
+.photo.loaded{opacity:1}.photo.missing{display:none}
+
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .9s ease,transform .9s var(--ease);transition-delay:var(--d,0s);will-change:opacity,transform}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important}}
+
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:box-shadow .4s ease,background .4s ease}
+header.scrolled{background:rgba(3,3,3,.95);box-shadow:0 12px 34px rgba(0,0,0,.55)}
+.header-in{height:62px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nav-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.nav-links a{font-size:13px;font-weight:500;color:#f2f2f2;position:relative;padding:6px 0;transition:color .3s ease}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-links a:hover{color:#fff}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:#fff;position:relative}
+.nav-cta .arr{transition:transform .35s var(--ease)}
+.nav-cta:hover .arr{transform:translate(4px,-4px)}
+.nav-cta::after{content:'';position:absolute;left:0;bottom:-4px;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav-cta:hover::after{transform:scaleX(1)}
+
+.hero{position:relative;margin-top:62px;height:calc(100vh - 62px);min-height:620px;max-height:900px;overflow:hidden;background:#cfcdca}
+.hero-media{position:absolute;inset:0;will-change:transform}
+.hero-media svg,.hero-media .hero-photo{width:100%;height:100%}
+.hero-photo{z-index:2}
+.hero-content{position:absolute;left:0;right:0;bottom:14%;pointer-events:none;z-index:3;will-change:transform,opacity}
+.hero-label{font-size:clamp(18px,2.4vw,30px);font-weight:400;color:#f4f3f1;opacity:0;text-shadow:0 2px 22px rgba(60,50,45,.35);animation:fadeUp 1s var(--ease) .35s forwards}
+.hero-title{font-size:clamp(42px,7.2vw,92px);line-height:.98;letter-spacing:-.01em;color:#fff;text-shadow:0 4px 30px rgba(60,50,45,.35);margin-top:6px}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line>span{display:block;transform:translateY(112%);animation:lineUp 1.1s var(--ease) forwards}
+.hero-title .line:nth-child(1)>span{animation-delay:.55s}
+.hero-title .line:nth-child(2)>span{animation-delay:.72s}
+.hero-cta-btn{pointer-events:auto;margin-top:28px;padding:14px 32px;font-size:14px;font-weight:600;font-family:var(--font-main);border-radius:999px;background:#e9e9e9;color:#111;border:none;cursor:pointer;animation:fadeUp 1s var(--ease) 1.1s backwards;transition:transform .35s var(--ease),box-shadow .35s ease,background .35s ease,color .35s ease}
+.hero-cta-btn:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(233,233,233,.22);background:var(--accent);color:#fff}
+@keyframes lineUp{to{transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+.section{padding:96px 0 0}
+/* ИЗМЕНЕНИЕ: Увеличен размер шрифта и добавлен letter-spacing для эффекта длины тире */
+.sec-title{
+  font-size:clamp(36px,4.2vw,52px); /* Было clamp(30px,3.6vw,42px) */
+  letter-spacing:.02em; /* Добавлено небольшое расстояние между буквами */
+  margin-bottom:44px;
+  position:relative;
+}
+
+/* ============ TYPEWRITER HEADINGS ============ */
+.tw-base{visibility:hidden}
+.tw-type{position:absolute;left:0;top:0;width:100%;white-space:pre-wrap;word-break:break-word;color:inherit}
+.sec-title.typing .tw-type::after{
+  content:'';
+  display:inline-block;
+  width:2px;
+  height:.95em;
+  margin-left:4px;
+  background:var(--accent);
+  vertical-align:baseline;
+  animation:caretBlink .75s steps(1) infinite;
+}
+@keyframes caretBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .sec-title.typing .tw-type::after{animation:none;opacity:0}
+}
+
+/* ============ ПОРТФОЛИО ============ */
+.works-grid{
+  display:grid;
+  grid-template-columns:272px 400px 320px;
+  gap:20px;
+  justify-content:center;
+  align-items:start;
+}
+.w-col{display:flex;flex-direction:column;gap:20px;height:566px}
+.w-col-left{justify-content:flex-start}
+.w-col-right{justify-content:flex-end}
+
+.tile{
+  background:var(--brown);
+  border-radius:14px;
+  position:relative;
+  overflow:hidden;
+}
+.tile::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);
+  transform:translateX(-130%);
+  transition:none;
+  pointer-events:none;
+}
+.tile:hover{transform:none;box-shadow:none;filter:none}
+.tile:hover::after{animation:tile-shine .9s ease}
+@keyframes tile-shine{
+  from{transform:translateX(-130%)}
+  to{transform:translateX(130%)}
+}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+
+.w-site{aspect-ratio:272/180;flex:none;width:100%}
+.w-big{flex:1 1 auto;width:100%}
+.w-posters{display:flex;gap:20px;flex:none;width:100%}
+.w-poster{flex:1 1 0;width:auto;aspect-ratio:204/289;height:auto}
+
+.dev-badge{
+  position:absolute;inset:0;z-index:3;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;letter-spacing:.04em;
+  color:var(--accent);pointer-events:none;
+}
+
+.more-wrap{text-align:center;margin-top:64px}
+.more-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#fff;
+  position:relative;padding-bottom:6px;
+}
+.more-link::after{
+  content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .45s var(--ease);
+}
+.more-link:hover::after{transform:scaleX(1)}
+.more-link .arr{transition:transform .35s var(--ease)}
+.more-link:hover .arr{transform:translate(5px,-5px)}
+
+@media (max-width:1024px){
+  .works-grid{grid-template-columns:1fr;justify-content:stretch}
+  .w-col{height:auto}
+  .w-col-right{justify-content:flex-start}
+  .w-big{height:480px;flex:none}
+  .w-posters{flex-wrap:wrap}
+  .w-poster{flex:1 1 calc(50% - 10px)}
+}
+@media (max-width:640px){
+  .w-big{height:380px}
+  .w-posters{flex-direction:column}
+  .w-poster{width:100%;flex:none}
+}
+
+/* ============ ABOUT ============ */
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center}
+.about-text{max-width:480px}
+.about-text p{font-size:13.5px;line-height:1.6;color:#f0f0f0;margin-bottom:15px}
+.about-text p:first-child{font-weight:500}
+
+.about-stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:28px 36px;
+  margin-top:30px;
+}
+.stat{
+  background:none;
+  border:none;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:92px;
+}
+.stat-value{
+  font-family:var(--font-head);
+  font-size:clamp(28px,3.2vw,40px);
+  line-height:1;
+  color:var(--accent);
+  display:flex;
+  align-items:baseline;
+  gap:1px;
+}
+.stat-label{
+  font-size:11.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+@media (max-width:640px){
+  .about-stats{gap:20px 26px}
+  .stat-value{font-size:30px}
+}
+
+.about-carousel{position:relative;width:100%;height:360px;overflow:visible}
+.carousel-item{position:absolute;top:50%;left:50%;width:260px;height:320px;border-radius:14px;overflow:hidden;background:var(--brown);box-shadow:0 24px 60px rgba(0,0,0,.5);transition:transform 1s var(--ease),opacity 1s var(--ease);will-change:transform,opacity;cursor:pointer}
+.carousel-item img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.carousel-item.pos-0{transform:translate(-50%,-50%) translateX(0) scale(1.05);z-index:4;opacity:1}
+.carousel-item.pos-1{transform:translate(-50%,-50%) translateX(100px) scale(0.85);z-index:2;opacity:0.8}
+.carousel-item.pos-2{transform:translate(-50%,-50%) translateX(180px) scale(0.7);z-index:1;opacity:0.4}
+.carousel-item.pos-3{transform:translate(-50%,-50%) translateX(-100px) scale(0.85);z-index:2;opacity:0.8}
+.carousel-item.side-hover:hover{box-shadow:0 24px 60px rgba(255,77,0,.35);filter:brightness(1.15)}
+.carousel-item.center-hover{cursor:zoom-in}
+.carousel-hint{position:absolute;bottom:-36px;left:50%;transform:translateX(-50%) translateY(8px);font-size:12px;font-weight:500;color:var(--muted);opacity:0;transition:opacity .3s ease,transform .3s var(--ease);white-space:nowrap;pointer-events:none;background:rgba(5,5,5,.85);padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.1);z-index:10}
+.about-carousel:hover .carousel-hint{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:1024px){
+  .about-grid{grid-template-columns:1fr;gap:44px}.about-text{max-width:100%}
+  .about-carousel{height:300px}.carousel-item{width:220px;height:270px}
+  .carousel-item.pos-1{transform:translate(-50%,-50%) translateX(80px) scale(0.85)}
+  .carousel-item.pos-2{transform:translate(-50%,-50%) translateX(140px) scale(0.7);opacity:0}
+  .carousel-item.pos-3{transform:translate(-50%,-50%) translateX(-80px) scale(0.85)}
+}
+@media (max-width:640px){
+  .about-carousel{height:260px}.carousel-item{width:180px;height:220px}
+  .carousel-item.pos-1{transform:translate(-50%,-50%) translateX(60px) scale(0.85)}
+  .carousel-item.pos-2{transform:translate(-50%,-50%) translateX(100px) scale(0.7);opacity:0}
+  .carousel-item.pos-3{transform:translate(-50%,-50%) translateX(-60px) scale(0.85)}
+  .carousel-hint{bottom:-32px;font-size:11px;padding:5px 12px}
+}
+
+/* ============ LIGHTBOX ============ */
+.about-lightbox{position:fixed;inset:0;z-index:700;background:rgba(5,5,5,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.about-lightbox.open{opacity:1;visibility:visible;transition:opacity .35s ease}
+.alb-stage{display:flex;align-items:center;justify-content:center;transform:scale(.94);transition:transform .35s var(--ease);max-width:90vw;max-height:86vh}
+.about-lightbox.open .alb-stage{transform:scale(1)}
+.alb-stage img{max-width:90vw;max-height:86vh;object-fit:contain;border-radius:8px;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.alb-close{position:absolute;top:22px;right:26px;width:44px;height:44px;display:grid;place-items:center;color:#fff;border-radius:50%;transition:transform .35s var(--ease),color .3s ease}
+.alb-close:hover{transform:rotate(90deg) scale(1.15);color:var(--accent)}
+.alb-prev,.alb-next{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;display:grid;place-items:center;color:#fff;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);transition:background .3s ease,color .3s ease,transform .3s var(--ease)}
+.alb-prev{left:26px}.alb-next{right:26px}
+.alb-prev:hover,.alb-next:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-50%) scale(1.08)}
+.alb-counter{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.14em;color:var(--muted)}
+@media (max-width:640px){.alb-prev{left:10px}.alb-next{right:10px}}
+
+.step-row{display:grid;grid-template-columns:340px 1fr;gap:44px;align-items:start;padding:28px 0;position:relative}
+.step-row::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:100%;background:linear-gradient(90deg,#050505 0%,var(--accent) 18%,var(--accent) 82%,#050505 100%);opacity:.85}
+.step-name{font-size:20px;font-weight:800;letter-spacing:.02em;transition:color .35s ease,transform .35s var(--ease)}
+.step-row:hover .step-name{color:var(--accent);transform:translateX(6px)}
+.step-desc{font-size:12.5px;line-height:1.55;color:#e3e3e3}
+.steps-note{text-align:right;font-size:11px;color:#c9c9c9;margin-top:20px;line-height:1.5}
+.center{text-align:center}.discuss-wrap{margin-top:46px}
+
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;align-items:start}
+.price-card{background:var(--brown);border-radius:18px;padding:20px 18px;color:#fff;transition:transform .45s var(--ease),box-shadow .45s ease}
+.price-card:hover{transform:translateY(-8px);box-shadow:0 26px 52px rgba(0,0,0,.5)}
+.price-card h3{font-size:13px;font-weight:500;margin-bottom:14px}
+.price-card li{display:flex;justify-content:space-between;gap:10px;font-size:11.5px;padding:4.5px 0;color:#f4f1ee}
+.price-card li span:last-child{white-space:nowrap;font-weight:500}
+.price-extra{margin-top:14px}
+.price-chip{background:var(--brown);border-radius:14px;padding:11px 14px;display:flex;justify-content:space-between;gap:10px;font-size:11.5px;color:#f4f1ee;transition:transform .4s var(--ease),filter .4s ease}
+.price-chip:hover{transform:translateY(-4px);filter:brightness(1.15)}
+.price-note{font-size:10.5px;line-height:1.45;color:#e6e6e6;margin-top:14px}
+
+/* ============ ОТЗЫВЫ (СТАК МЕТОД - БЕЗ ОБРЕЗОК) ============ */
+.reviews-section{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  width:100%;
+}
+
+.rev-hero-img{
+  flex:0 0 30%;
+  min-width:260px;
+  aspect-ratio:1/1;
+  background:url('img/anastasia.jpg') center/cover no-repeat;
+  border-radius:16px;
+  box-shadow:0 20px 40px rgba(0,0,0,.3);
+}
+
+.rev-arrow-btn{
+  flex:none;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  cursor:pointer;
+  transition:transform .3s var(--ease),color .3s ease;
+  z-index:5;
+}
+.rev-arrow-btn:hover{
+  color:var(--accent);
+  transform:scale(1.15);
+}
+.rev-arrow-btn:active{
+  transform:scale(.9);
+}
+
+/* Контейнер для стека карточек */
+.rev-stack-container {
+  flex: 1;
+  position: relative;
+  /* Даем высоту под самую большую карточку + запас на тени/кавычки */
+  min-height: 450px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Важно: не обрезаем ничего здесь */
+  overflow: visible; 
+}
+
+.rev-card {
+  /* Все карточки лежат в одной точке центра */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* Размер карточки */
+  width: 100%;
+  max-width: 500px; /* Компактная ширина */
+  
+  background: var(--brown);
+  border-radius: 18px;
+  padding: 32px 24px 28px;
+  
+  /* Стиль контента */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  
+  /* Анимация появления/исчезновения */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, transform 0.5s var(--ease), visibility 0s linear 0.5s;
+  z-index: 1;
+}
+
+/* Активная карточка */
+.rev-card.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  transition-delay: 0s;
+}
+
+/* Неактивные чуть уменьшаем для эффекта глубины (опционально) */
+.rev-card:not(.active) {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.rev-card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rev-quote-open,
+.rev-quote-close{
+  position:absolute;
+  font-family:'Times New Roman',Georgia,serif;
+  font-size:80px;
+  line-height:1;
+  color:var(--accent);
+  pointer-events:none;
+  user-select:none;
+  opacity:.9;
+  z-index: 1;
+}
+.rev-quote-open{top:10px;left:16px}
+.rev-quote-close{bottom:-35px;right:16px} 
+
+.rev-avatar-placeholder{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:var(--gray);
+  margin-bottom:18px;
+  border:3px solid rgba(255,255,255,.12);
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+
+.rev-name{
+  font-size:20px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:4px;
+}
+.rev-role{
+  font-size:13px;
+  color:rgba(255,255,255,.6);
+  margin-bottom:18px;
+}
+.rev-text{
+  font-size:12.5px;
+  line-height:1.65;
+  color:rgba(255,255,255,.82);
+  max-width:100%;
+}
+
+@media(max-width:1024px){
+  .reviews-section{flex-direction:column;align-items:stretch}
+  .rev-hero-img{width:100%;height:300px;flex:none}
+  .rev-arrow-btn{display:none}
+  .rev-stack-container {
+    min-height: 400px;
+    margin-top: 20px;
+  }
+  .rev-card {
+    max-width: 100%; /* На мобильных растягиваем на всю ширину */
+    width: 90%;
+  }
+}
+@media(max-width:640px){
+  .rev-hero-img{height:200px;border-radius:12px}
+  .rev-card{padding:24px 16px 20px;} 
+  .rev-quote-open, .rev-quote-close { font-size:60px; }
+  .rev-stack-container {
+    min-height: 350px;
+  }
+}
+
+.faq-item{background:var(--brown);border-radius:10px;overflow:hidden;margin-bottom:16px;transition:transform .4s var(--ease),box-shadow .4s ease,filter .4s ease}
+.faq-item:hover{transform:scale(1.02);box-shadow:0 16px 36px rgba(0,0,0,.4);filter:brightness(1.08)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;text-align:left;padding:17px 22px;font-size:13px;font-weight:700;color:var(--text)}
+.faq-icon{position:relative;flex:none;width:16px;height:16px}
+.faq-icon::before,.faq-icon::after{content:'';position:absolute;background:var(--accent);border-radius:2px}
+.faq-icon::before{left:50%;top:0;width:2px;height:100%;transform:translateX(-50%)}
+.faq-icon::after{top:50%;left:0;height:2px;width:100%;transform:translateY(-50%)}
+.faq-a{display:grid;grid-template-rows:1fr}
+.faq-a-inner{overflow:hidden;padding:0 22px 20px;font-size:12.5px;line-height:1.65;color:#efe9e4}
+
+.contacts-q{text-align:center;font-size:14px;margin:34px 0 24px;color:#f2f2f2}
+.contacts-cta{display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap}
+.btn-solid,.btn-outline{display:inline-block;padding:13px 28px;border-radius:999px;font-size:14px;font-weight:700;transition:transform .35s var(--ease),box-shadow .35s ease,background .35s ease,color .35s ease,border-color .35s ease}
+.btn-solid{background:#e9e9e9;color:#111}
+.btn-solid:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(233,233,233,.22);background:var(--accent);color:#fff}
+.btn-outline{border:1px solid #585858;color:var(--accent)}
+.btn-outline:hover{transform:translateY(-4px);border-color:var(--accent);background:rgba(255,77,0,.1);box-shadow:0 0 30px rgba(255,77,0,.25)}
+
+footer{padding:110px 0 46px}
+.footer-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr 1.15fr;gap:40px}
+.f-title{font-size:12px;font-weight:800;margin-bottom:14px;line-height:1.4}
+.f-text{font-size:12px;line-height:1.55;color:#d6d6d6;max-width:220px}
+.f-links li{margin-bottom:9px}
+.f-links a{font-size:12px;color:#d6d6d6;position:relative;transition:color .3s ease,padding-left .3s ease}
+.f-links a:hover{color:var(--accent);padding-left:6px}
+.f-socials{display:flex;gap:10px;margin-top:16px}
+.f-socials a{width:34px;height:34px;border-radius:50%;background:#e9e9e9;color:#111;display:grid;place-items:center;transition:transform .4s var(--ease),background .3s ease,color .3s ease}
+.f-socials a:hover{transform:translateY(-4px) rotate(-12deg);background:var(--accent);color:#fff}
+
+/* ============ COOKIE BANNER ============ */
+.cookie-banner{
+  position:fixed;
+  left:24px;
+  right:24px;
+  bottom:24px;
+  z-index:99998;
+  max-width:760px;
+  margin:0 auto;
+  background:rgba(15,15,15,.96);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:18px 20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(20px);
+  transition:opacity .4s ease,transform .4s var(--ease),visibility 0s linear .4s;
+}
+.cookie-banner.show{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  transition:opacity .4s ease,transform .4s var(--ease);
+}
+.cookie-content p{
+  font-size:12.5px;
+  line-height:1.55;
+  color:#e8e8e8;
+  margin-bottom:14px;
+}
+.cookie-content a{
+  color:var(--accent);
+  text-decoration:underline;
+}
+.cookie-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.cookie-btn{
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.04em;
+  transition:transform .3s var(--ease),background .3s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.cookie-accept{
+  background:var(--accent);
+  color:#fff;
+}
+.cookie-accept:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(255,77,0,.28);
+}
+.cookie-decline{
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;
+  background:transparent;
+}
+.cookie-decline:hover{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  color:var(--accent);
+  background:rgba(255,77,0,.08);
+}
+@media (max-width:640px){
+  .cookie-banner{left:12px;right:12px;bottom:12px;padding:16px}
+  .cookie-actions{gap:8px}
+  .cookie-btn{flex:1 1 auto;text-align:center}
+}
+
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(5,5,5,.45);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
+.modal-overlay.open{opacity:1;visibility:visible;transition:opacity .4s ease}
+.modal-close{position:absolute;top:22px;right:26px;width:40px;height:40px;display:grid;place-items:center;color:#fff;border-radius:50%;transition:transform .35s var(--ease),color .3s ease}
+.modal-close:hover{transform:rotate(90deg) scale(1.15);color:var(--accent)}
+.modal-panel{width:424px;max-width:100%;max-height:calc(100vh - 48px);overflow-y:auto;background:#191919;border-radius:16px;padding:58px 52px 50px;transform:translateY(30px) scale(.94);transition:transform .45s var(--ease);box-shadow:0 40px 90px rgba(0,0,0,.55)}
+.modal-overlay.open .modal-panel{transform:translateY(0) scale(1)}
+.modal-title{font-size:26px;font-weight:800;letter-spacing:-.01em;text-align:center;color:#fff;margin-bottom:46px}
+.modal-input{width:100%;background:transparent;border:1px solid #f2f2f2;border-radius:4px;color:#fff;font:inherit;font-size:14px;padding:10px 13px;margin-bottom:18px;outline:none;transition:border-color .3s ease,box-shadow .3s ease}
+.modal-input::placeholder{color:#f0f0f0;opacity:1}
+.modal-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,0,.18)}
+.modal-textarea{min-height:128px;resize:none}
+.modal-input.error{border-color:var(--accent);animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.modal-consent{display:flex;align-items:flex-start;gap:11px;color:#fff;font-size:15px;line-height:1.45;margin:8px 0 36px;position:relative}
+.modal-consent input{position:absolute;opacity:0;width:0;height:0}
+.consent-box{flex:none;width:19px;height:19px;margin-top:2px;border:1px solid #f2f2f2;border-radius:2px;position:relative;transition:background .25s ease,border-color .25s ease,transform .25s var(--ease)}
+.consent-box:active{transform:scale(.88)}
+.consent-box::after{content:'';position:absolute;left:5px;top:2px;width:5px;height:10px;border:solid #191919;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--ease)}
+.modal-consent input:checked + .consent-box{background:var(--accent);border-color:var(--accent)}
+.modal-consent input:checked + .consent-box::after{transform:rotate(45deg) scale(1);border-color:#fff}
+.modal-consent.error .consent-box{border-color:var(--accent);animation:shake .4s ease}
+.modal-submit{width:100%;background:#d9d9d9;color:#191919;border:none;border-radius:6px;padding:11px 16px;font-size:15px;font-weight:500;transition:background .3s ease,transform .3s var(--ease),box-shadow .3s ease}
+.modal-submit:hover{background:#ffffff;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.modal-submit:disabled{opacity:.6;cursor:not-allowed}
+.modal-success{text-align:center;padding:46px 0 40px;color:#fff}
+.modal-success p{font-size:24px;font-weight:800;margin-bottom:12px}
+.modal-success span{font-size:13px;color:var(--muted);line-height:1.5}
+@media (max-width:640px){.modal-panel{padding:44px 26px 36px}.modal-close{top:12px;right:12px}}
+
+@media (max-width:1024px){
+  .nav-links{display:none}
+  .step-row{grid-template-columns:1fr;gap:10px}
+  .price-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .price-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}
+  .section{padding-top:70px}
+}
+</style>
+</head>
+<body class="loading">
+
+<!-- ЭКРАН ЗАГРУЗКИ -->
+<div class="page-loader" id="pageLoader" aria-hidden="true">
+  <div class="loader-inner">
+    <div class="loader-logo">АР</div>
+    <div class="loader-bar"><span></span></div>
+    <div class="loader-text">Загружаем портфолио</div>
+  </div>
+</div>
+
+<header id="topNav">
+  <div class="container header-in">
+    <nav class="nav-links" id="navLinks">
+      <a href="#hero" class="active">Главная</a>
+      <a href="#works">Портфолио</a>
+      <a href="#about">Обо мне</a>
+      <a href="#steps">Этапы работы</a>
+      <a href="#price">Прайс лист</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#faq">Вопрос-ответ</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <button class="nav-cta" data-open-modal type="button">Оставить заявку
+      <svg class="arr" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="hero">
+  <div class="hero-media" id="heroMedia">
+    <svg viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Портрет дизайнера">
+      <defs>
+        <linearGradient id="gBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8d6d3"/><stop offset="1" stop-color="#c2c0bd"/></linearGradient>
+        <linearGradient id="gHair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a40"/><stop offset="1" stop-color="#66392a"/></linearGradient>
+        <linearGradient id="gSw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b3b1ae"/><stop offset="1" stop-color="#93918e"/></linearGradient>
+        <radialGradient id="gSkin" cx=".5" cy=".42" r=".75"><stop offset="0" stop-color="#f0d2bf"/><stop offset="1" stop-color="#dfb5a0"/></radialGradient>
+        <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3"/></filter>
+      </defs>
+      <rect width="1440" height="810" fill="url(#gBg)"/>
+      <g filter="url(#soft)">
+        <path d="M720 90 C560 90 468 205 466 372 C465 500 492 560 486 810 L954 810 C948 560 975 500 974 372 C972 205 880 90 720 90 Z" fill="url(#gHair)"/>
+        <path d="M610 810 C600 700 616 600 652 520 C664 494 686 486 696 504 C664 590 650 700 654 810 Z" fill="url(#gSw)"/>
+        <path d="M498 810 C502 640 588 560 720 556 C852 560 938 640 942 810 Z" fill="url(#gSw)"/>
+        <path d="M688 430 h64 v88 c0 26 -64 26 -64 0 Z" fill="#e0b6a2"/>
+        <ellipse cx="720" cy="350" rx="92" ry="112" fill="url(#gSkin)"/>
+        <path d="M652 402 C650 372 664 356 684 356 C702 356 710 372 706 400 C702 432 684 452 668 448 C654 444 653 424 652 402 Z" fill="url(#gSkin)"/>
+        <path d="M720 232 C636 232 606 292 604 356 C620 312 652 296 690 292 C740 287 790 296 812 318 C826 332 832 344 834 358 C834 292 802 232 720 232 Z" fill="#6f4130"/>
+        <path d="M604 340 C588 420 596 500 586 588 C580 646 566 700 552 780 L606 780 C622 660 626 560 634 470 C640 402 630 366 604 340 Z" fill="#7a4836"/>
+        <path d="M836 340 C852 420 844 500 854 588 C860 646 874 700 888 780 L834 780 C818 660 814 560 806 470 C800 402 810 366 836 340 Z" fill="#7a4836"/>
+      </g>
+    </svg>
+    <img class="photo hero-photo" src="img/hero.jpg" alt="Анастасия Роженкова — дизайнер">
+  </div>
+  <div class="container hero-content" id="heroContent">
+    <p class="hero-label">Дизайнер</p>
+    <h1 class="hero-title">
+      <span class="line"><span>Анастасия</span></span>
+      <span class="line"><span>Роженкова</span></span>
+    </h1>
+    <button class="hero-cta-btn" data-open-modal>Оставить заявку</button>
+  </div>
+</section>
+
+<!-- БЛОК БЕГУЩЕЙ СТРОКИ ПЕРЕМЕЩЕН СЮДА -->
+<div class="marquee-wrapper">
+  <div class="marquee-inner">
+    <!-- Текст дублируется дважды для бесшовного цикла -->
+    <span class="marquee-item">Графический дизайн • UX/UI • Веб-сайты • Полиграфия • Брендбуки • Логотипы • Презентации • Соцсети •</span>
+    <span class="marquee-item">Графический дизайн • UX/UI • Веб-сайты • Полиграфия • Брендбуки • Логотипы • Презентации • Соцсети •</span>
+  </div>
+</div>
+
+<section class="section" id="works">
+  <div class="container">
+    <h2 class="sec-title">Портфолио —</h2>
+    <div class="works-grid stagger" id="worksGrid">
+      <div class="w-col w-col-left">
+        <div class="tile w-site"><img class="photo" loading="lazy" src="img/work-01.jpg" alt="Брендинг"></div>
+        <div class="tile w-site"><img class="photo" loading="lazy" src="img/work-02.jpg" alt="Упаковка"></div>
+      </div>
+      <div class="w-col w-col-center">
+        <div class="tile w-big"><img class="photo" loading="lazy" src="img/work-04.jpg" alt="Сайт"></div>
+      </div>
+      <div class="w-col w-col-right">
+        <div class="tile w-site">
+          <div class="dev-badge">В разработке</div>
+        </div>
+        <div class="w-posters">
+          <div class="tile w-poster"><img class="photo" loading="lazy" src="img/work-05.jpg" alt="Постер 1"></div>
+          <div class="tile w-poster"><img class="photo" loading="lazy" src="img/work-06.jpg" alt="Постер 2"></div>
+        </div>
+      </div>
+    </div>
+    <div class="more-wrap reveal">
+      <a href="portfolio/index.html" class="more-link" id="moreBtn">Увидеть больше
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="sec-title">Обо мне —</h2>
+    <div class="about-grid">
+      <div class="about-text stagger">
+        <p>Дизайн — это не только красиво.</p>
+        <p>Меня зовут Настя, и уже более 5 лет я работаю в интернете. Мой путь начинался со сторисмейкерства и СММа, но со временем я пришла к дизайну. Более трех лет я работаю графическим дизайнером, и более года занимаюсь UX/UI дизайном.</p>
+        <p>На протяжении работы я всегда обучаюсь и повышаю квалификацию, что бы следить за трендами и не отставать от технологий. Сейчас я так же прохожу крупное обучение по веб дизайну</p>
+        <p>Моя цель — сделать не просто красивую картинку, а создать продающий и рабочий продукт, который закроет все потребности моего клиента</p>
+
+        <div class="about-stats">
+          <div class="stat" data-count="4">
+            <span class="stat-value"><span class="stat-num">0</span><span>+</span></span>
+            <span class="stat-label">лет работы</span>
+          </div>
+          <div class="stat" data-count="30">
+            <span class="stat-value"><span class="stat-num">0</span><span>+</span></span>
+            <span class="stat-label">проектов</span>
+          </div>
+          <div class="stat" data-count="8">
+            <span class="stat-value"><span class="stat-num">0</span></span>
+            <span class="stat-label">обучений</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-carousel reveal" id="aboutCarousel">
+        <div class="carousel-item"><img src="img/about-1.jpg" alt="Фото 1"></div>
+        <div class="carousel-item"><img src="img/about-2.jpg" alt="Фото 2"></div>
+        <div class="carousel-item"><img src="img/about-3.jpg" alt="Фото 3"></div>
+        <div class="carousel-item"><img src="img/about-4.jpg" alt="Фото 4"></div>
+        <div class="carousel-hint">Нажмите, чтобы посмотреть</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="steps">
+  <div class="container">
+    <h2 class="sec-title">Этапы работы —</h2>
+    <div class="stagger">
+      <div class="step-row"><div class="step-name">ЗНАКОМСТВО И СТАРТ</div><div class="step-desc">Клиент рассказывает о задаче и ожиданиях, я задаю уточняющие вопросы.<br>Созвон: обсуждаем детали, объём работы и стоимость.<br>Подписываем бриф: задача, сроки, ключевые пожелания.<br>Предоплата бронирует место в графике и подтверждает старт.</div></div>
+      <div class="step-row"><div class="step-name">АНАЛИЗ И МУДБОРД</div><div class="step-desc">Изучаю конкурентов в нише: что работает, что нет.<br>Собираю мудборд: цвет, шрифты, настроение, стилистика.<br>Подбираю референсы и согласовываю визуальный вектор.</div></div>
+      <div class="step-row"><div class="step-name">ДИЗАЙН КОНЦЕПЦИИ</div><div class="step-desc">Разрабатываю несколько концепций в рамках согласованного вектора.<br>Предоставляю варианты на выбор с пояснениями по каждому.<br>Проводим созвон: обсуждаем, что подходит, и выбираем направление<br>для дальнейшей работы.</div></div>
+      <div class="step-row"><div class="step-name">ОПЛАТА И ИТОГ ДИЗАЙНА</div><div class="step-desc">После выбора концепции вносится остаток оплаты.<br>Дорабатываю выбранное направление: детали, адаптивы, финальная полировка.<br>Передаю готовый дизайн в оговорённом формате.</div></div>
+    </div>
+    <p class="steps-note reveal">*План и этапы работы могут меняться<br>в зависимости от проекта</p>
+    <div class="center discuss-wrap reveal">
+      <a href="#contacts" class="more-link" data-open-modal>Оставить заявку
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="price">
+  <div class="container">
+    <h2 class="sec-title">Прайс лист —</h2>
+    <div class="price-grid stagger">
+      <div><div class="price-card"><h3>Графический дизайн</h3><ul><li><span>Визитка</span><span>от 2.000</span></li><li><span>Банер</span><span>от 2.000</span></li><li><span>Посты/карусели</span><span>от 1.500</span></li><li><span>Карточка товара</span><span>от 1.500</span></li><li><span>Прайс лист</span><span>от 2.000</span></li></ul></div><div class="price-extra"><div class="price-chip"><span>Доп. карточки</span><span>700</span></div></div></div>
+      <div><div class="price-card"><h3>Сайты</h3><ul><li><span>Дизайн одностранич.</span><span>от 10.000</span></li><li><span>Дизайн многостранич.</span><span>от 30.000</span></li><li><span>Разработка одностранич.</span><span>от 15.000</span></li><li><span>Разработка многостранич.</span><span>от 30.000</span></li></ul></div><div class="price-extra"><div class="price-chip"><span>Разработка на Tilda</span><span>-20%</span></div></div></div>
+      <div><div class="price-card"><h3>Полиграфия</h3><ul><li><span>Листовки/флаеры</span><span>от 1.500</span></li><li><span>Плакаты</span><span>от 2.000</span></li><li><span>Каталоги</span><span>от 5.000</span></li><li><span>Банера</span><span>от 3.000</span></li><li><span>Сертификаты</span><span>от 2.000</span></li></ul></div><p class="price-note">*Сложное и нестандартные работы рассчитываются индивидуально</p></div>
+      <div><div class="price-card"><h3>Дополнительно</h3><ul><li><span>Презентации</span><span>от 2.000</span></li><li><span>Соц. сети</span><span>от 1.000</span></li><li><span>Обложки</span><span>от 1.000</span></li><li><span>Игральные карты</span><span>от 2.000</span></li><li><span>Многое другое</span><span>от 500</span></li></ul></div><p class="price-note">**Срочность заказа и правки могут влиять на стоимость работы</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ БЛОК ОТЗЫВОВ ============ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <h2 class="sec-title">Отзывы —</h2>
+
+    <div class="reviews-section">
+      <!-- Фото Анастасии слева (квадратное) -->
+      <div class="rev-hero-img"></div>
+
+      <!-- Стрелка назад -->
+      <button class="rev-arrow-btn" id="revPrev" type="button" aria-label="Назад">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <!-- Контейнер для стека карточек -->
+      <div class="rev-stack-container" id="revStackContainer">
+        <!-- Карточки будут генерироваться сюда через JS -->
+      </div>
+
+      <!-- Стрелка вперёд -->
+      <button class="rev-arrow-btn" id="revNext" type="button" aria-label="Вперёд">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="sec-title">Вопро - ответ —</h2>
+    <div class="faq stagger">
+      <div class="faq-item"><div class="faq-q"><span>Как оформить заказ?</span><span class="faq-icon"></span></div><div class="faq-a"><div class="faq-a-inner">Оставьте заявку на сайте, или напишите в любом мессенджере, расскажите о задаче, после чего мы созвонимся для обсуждения деталей</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Как формируется стоимость?</span><span class="faq-icon"></span></div><div class="faq-a"><div class="faq-a-inner">Цена зависит от типа проекта, сложности и объема работы. Базовые цены указаны в прайс-листе, а стоимость нестандартных проектов рассчитывается индивидуально</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Какие сроки выполнения?</span><span class="faq-icon"></span></div><div class="faq-a"><div class="faq-a-inner">Сроки зависят от сложности и объема работы. Точные сроки согласовываются до начала работы</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Сколько правок входит в стоимость?</span><span class="faq-icon"></span></div><div class="faq-a"><div class="faq-a-inner">В стоимость входят до трех крупных правок. Дополнительные изменения, выходящие за рамки первоначальной договоренности, оплачиваются отдельно</div></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Вы разрабатываете сайт полностью, или только дизайн?</span><span class="faq-icon"></span></div><div class="faq-a"><div class="faq-a-inner">Я работаю и над дизайном отдельно, разрабатывая его в Figma, так и разрабатываю сайты полностью. Работа по разработке сайта производится на Tilda, или кодом, с помощью моего верстальщика</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contacts">
+  <div class="container">
+    <h2 class="sec-title">Контакты —</h2>
+    <p class="contacts-q reveal">Хотите заказать дизайн?</p>
+    <div class="contacts-cta stagger">
+      <a href="#contacts" class="btn-solid" data-open-modal>Оставить заявку</a>
+      <a href="tel:+79062171530" class="btn-outline">+7 (906) 217-15-30</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-grid stagger">
+    <div><div class="f-title">Дизайнер<br>Роженкова Анастасия</div><p class="f-text">Дизайн работает тогда, когда он сделан с душой, и по всем правилам</p></div>
+    <div><div class="f-title">Блоки</div><ul class="f-links"><li><a href="#works">Портфолио</a></li><li><a href="#about">Обо мне</a></li><li><a href="#steps">Этапы работы</a></li><li><a href="#price">Прайс лист</a></li><li><a href="#reviews">Отзывы</a></li><li><a href="#faq">Вопрос-ответ</a></li><li><a href="#contacts">Контакты</a></li></ul></div>
+    <div><div class="f-title">Контакты</div><p class="f-text">г. Калининград,<br>ул. Балтийская, д. 12<br><a href="tel:+79062171530" style="color:#d6d6d6;transition:color .3s">+7 (906) 217 15 30</a></p></div>
+    <div>
+      <div class="f-title">© 2026 Все права защищены</div>
+      <ul class="f-links" style="margin-top:12px">
+        <li><a href="cookie-policy.html">Политика в отношении cookie</a></li>
+      </ul>
+      <div class="f-socials">
+        <a href="https://t.me/+79062171530" target="_blank" rel="noopener" aria-label="Telegram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></a>
+        <a href="tel:+79062171530" aria-label="Телефон"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.5 2.9 3.8 5.2 6.7 6.7l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.4.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1 .2 2.3.6 3.4.1.4 0 .8-.2 1.1l-2.1 2.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-hidden="true">
+  <div class="cookie-content">
+    <p>
+      Мы используем файлы cookie, чтобы сайт работал корректно и нам было удобнее понимать,
+      как вы его используете. Продолжая пользоваться сайтом, вы соглашаетесь с
+      <a href="cookie-policy.html" target="_blank" rel="noopener">политикой в отношении cookie</a>.
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-accept" id="cookieAccept" type="button">Принять</button>
+      <button class="cookie-btn cookie-decline" id="cookieDecline" type="button">Только необходимые</button>
+    </div>
+  </div>
+</div>
+
+<div class="about-lightbox" id="aboutLightbox" aria-hidden="true">
+  <button class="alb-close" id="albClose" type="button" aria-label="Закрыть">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+  <button class="alb-prev" id="albPrev" type="button" aria-label="Предыдущее фото">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="alb-stage"><img id="albImg" src="" alt=""></div>
+  <button class="alb-next" id="albNext" type="button" aria-label="Следующее фото">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="alb-counter" id="albCounter"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 class="modal-title" id="modalTitle">Оставьте заявку</h3>
+    <form id="requestForm" novalidate>
+      <input class="modal-input" type="text" name="name" id="nameInput" placeholder="Имя" autocomplete="name">
+      <input class="modal-input" type="tel" name="phone" id="phoneInput" placeholder="Телефон*" autocomplete="tel">
+      <textarea class="modal-input modal-textarea" name="message" placeholder="Комментарий"></textarea>
+      <label class="modal-consent" id="consentLabel">
+        <input type="checkbox" id="consentCheck">
+        <span class="consent-box"></span>
+        <span>Я согласен(-на) на обработку персональных данных</span>
+      </label>
+      <button class="modal-submit" type="submit">Отправить заявку</button>
+    </form>
+    <div class="modal-success" id="modalSuccess" hidden>
+      <p>Заявка отправлена!</p>
+      <span>Спасибо! Я свяжусь с вами в ближайшее время</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var qs = function(s){ return document.querySelector(s); };
+  var qsa = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  emailjs.init({ publicKey: 'ВСТАВЬ_СЮДА_PUBLIC_KEY' });
+  var EJ_SERVICE  = 'service_g23p1wp';
+  var EJ_TEMPLATE = 'template_qis7v21';
+
+  /* ============ PAGE LOADER ============ */
+  var pageLoader = qs('#pageLoader');
+  var loaderDone = false;
+
+  function hidePageLoader(){
+    if (loaderDone || !pageLoader) return;
+    loaderDone = true;
+    pageLoader.classList.add('hidden');
+    document.body.classList.remove('loading');
+    setTimeout(function(){
+      if (pageLoader && pageLoader.parentNode) {
+        pageLoader.parentNode.removeChild(pageLoader);
+      }
+    }, 700);
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(hidePageLoader, 350);
+  });
+
+  // Страховка, если что-то не даст событию load сработать
+  setTimeout(hidePageLoader, 7000);
+
+  /* ============ CUSTOM CURSOR ============ */
+  if (window.matchMedia && window.matchMedia('(pointer:fine)').matches){
+    var cur = document.createElement('div');
+    cur.className = 'cursor-dot';
+    document.body.appendChild(cur);
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var cx = mx, cy = my;
+    var growSel = 'a, button, .tile, input, textarea, .modal-consent, .hero-cta-btn, .carousel-item, .cookie-btn, .slider-btn, .rev-nav-btn, .rev-arrow-btn';
+    window.addEventListener('mousemove', function(e){ mx = e.clientX; my = e.clientY; cur.classList.add('on'); }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', function(){ cur.classList.remove('on'); });
+    window.addEventListener('blur', function(){ cur.classList.remove('on'); });
+    document.addEventListener('mouseover', function(e){
+      var hit = e.target && e.target.closest ? e.target.closest(growSel) : null;
+      cur.classList.toggle('grow', !!hit);
+    });
+    (function curLoop(){
+      cx += (mx - cx) * 0.22;
+      cy += (my - cy) * 0.22;
+      cur.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0) translate(-50%,-50%)';
+      requestAnimationFrame(curLoop);
+    })();
+  }
+
+  qsa('img.photo').forEach(function(img){
+    function ok(){ img.classList.add('loaded'); }
+    function bad(){ img.classList.add('missing'); }
+    if (img.complete && img.naturalWidth > 0){ ok(); }
+    img.addEventListener('load', ok);
+    img.addEventListener('error', bad);
+  });
+
+  qsa('.stagger').forEach(function(box){
+    Array.prototype.slice.call(box.children).forEach(function(child, idx){
+      child.style.setProperty('--d', (idx * 0.09) + 's');
+      child.classList.add('reveal');
+    });
+  });
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, function(m){
+      return ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+      })[m];
+    });
+  }
+
+  /* ============ TYPEWRITER HEADINGS ============ */
+  var typeTitles = qsa('.sec-title');
+  typeTitles.forEach(function(el){
+    var text = el.textContent.trim();
+    if (!text) return;
+    el.setAttribute('aria-label', text);
+    el.dataset.text = text;
+    el.innerHTML =
+      '<span class="tw-base" aria-hidden="true">' + escapeHtml(text) + '</span>' +
+      '<span class="tw-type" aria-hidden="true"></span>';
+  });
+
+  function startTyping(el){
+    if (el.dataset.typed) return;
+    el.dataset.typed = '1';
+    var text = el.dataset.text || '';
+    var out = el.querySelector('.tw-type');
+    if (!out) return;
+
+    if (reduceMotion){
+      out.textContent = text;
+      return;
+    }
+
+    el.classList.add('typing');
+    var i = 0;
+    (function tick(){
+      if (i <= text.length){
+        out.textContent = text.slice(0, i);
+        i++;
+        setTimeout(tick, 55);
+      } else {
+        el.classList.remove('typing');
+      }
+    })();
+  }
+
+  if ('IntersectionObserver' in window){
+    var twIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          startTyping(en.target);
+          twIO.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+    typeTitles.forEach(function(el){ twIO.observe(el); });
+  } else {
+    typeTitles.forEach(startTyping);
+  }
+
+  /* ============ COUNT UP STATS ============ */
+  var stats = qsa('.stat');
+  function animateCount(el){
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    var numEl = el.querySelector('.stat-num');
+    if (!numEl) return;
+    var target = parseInt(el.dataset.count || numEl.textContent, 10) || 0;
+
+    if (reduceMotion){
+      numEl.textContent = target;
+      return;
+    }
+
+    var duration = 1400;
+    var start = null;
+    function step(ts){
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      numEl.textContent = Math.round(target * eased);
+      if (p < 1){
+        requestAnimationFrame(step);
+      } else {
+        numEl.textContent = target;
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  if ('IntersectionObserver' in window){
+    var statIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          animateCount(en.target);
+          statIO.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    stats.forEach(function(el){ statIO.observe(el); });
+  } else {
+    stats.forEach(animateCount);
+  }
+
+  var revealEls = qsa('.reveal');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else { revealEls.forEach(function(el){ el.classList.add('in'); }); }
+
+  var headerEl = qs('#topNav');
+  var heroMedia = qs('#heroMedia');
+  var heroContent = qs('#heroContent');
+  var ticking = false;
+
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var sy = window.scrollY || window.pageYOffset;
+      headerEl.classList.toggle('scrolled', sy > 10);
+      var heroH = qs('#hero').offsetHeight;
+      if (sy < heroH){
+        heroMedia.style.transform = 'translateY(' + (sy * 0.18) + 'px)';
+        heroContent.style.transform = 'translateY(' + (sy * -0.08) + 'px)';
+        heroContent.style.opacity = Math.max(0, 1 - sy / (heroH * 0.75));
+      }
+      var ids = ['hero','works','about','steps','price','reviews','faq','contacts'];
+      var current = 'hero';
+      var docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      var reachedBottom = (sy + window.innerHeight) >= (docHeight - 50);
+      if (reachedBottom){ current = 'contacts'; }
+      else { ids.forEach(function(sid){ var sec = document.getElementById(sid); if (sec && sec.getBoundingClientRect().top <= 160) current = sid; }); }
+      qsa('#navLinks a').forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ============ CAROUSEL + LIGHTBOX ============ */
+  (function initCarousel(){
+    var carousel = qs('#aboutCarousel');
+    if (!carousel) return;
+    var items = qsa('#aboutCarousel .carousel-item');
+    if (items.length < 2) return;
+
+    const initialSlots = [0, 3, 1, 2];
+    var activeIndex = 0;
+    var timer = null;
+
+    function updateCarousel(){
+      items.forEach(function(el, i){
+        var slot = (initialSlots[i] + activeIndex) % 4;
+        el.classList.remove('pos-0', 'pos-1', 'pos-2', 'pos-3');
+        el.classList.add('pos-' + slot);
+        el.classList.remove('side-hover', 'center-hover');
+        if (slot === 0) el.classList.add('center-hover');
+        else if (slot === 1 || slot === 3) el.classList.add('side-hover');
+      });
+    }
+    function next(){ activeIndex = (activeIndex + 1) % items.length; updateCarousel(); }
+    function resetTimer(){ clearInterval(timer); timer = setInterval(next, 10000); }
+
+    items.forEach(function(el, i){
+      el.addEventListener('click', function(e){
+        var currentSlot = (initialSlots[i] + activeIndex) % 4;
+        if (currentSlot === 0) { openAboutLb(i); }
+        else { activeIndex = (4 - initialSlots[i]) % 4; updateCarousel(); resetTimer(); }
+      });
+    });
+    carousel.addEventListener('mouseenter', function(){ clearInterval(timer); });
+    carousel.addEventListener('mouseleave', function(){ resetTimer(); });
+    updateCarousel(); resetTimer();
+
+    var lb = qs('#aboutLightbox');
+    var lbImg = qs('#albImg');
+    var lbCounter = qs('#albCounter');
+    var lbIndex = 0, lbOpen = false;
+    function showLb(){
+      var img = items[lbIndex].querySelector('img');
+      lbImg.src = img.src; lbImg.alt = img.alt;
+      lbCounter.textContent = (lbIndex + 1) + ' / ' + items.length;
+    }
+    window.openAboutLb = function(i){
+      lbIndex = i; showLb();
+      lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
+      document.body.classList.add('modal-open'); lbOpen = true; clearInterval(timer);
+    };
+    function closeAboutLb(){
+      lb.classList.remove('open'); lb.setAttribute('aria-hidden','true');
+      document.body.classList.remove('modal-open'); lbOpen = false; resetTimer();
+    }
+    function lbStep(dir){ lbIndex = (lbIndex + dir + items.length) % items.length; showLb(); }
+    qs('#albClose').addEventListener('click', closeAboutLb);
+    qs('#albPrev').addEventListener('click', function(){ lbStep(-1); });
+    qs('#albNext').addEventListener('click', function(){ lbStep(1); });
+    lb.addEventListener('click', function(e){ if (e.target === lb) closeAboutLb(); });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && lbOpen) closeAboutLb();
+      if (lbOpen && e.key === 'ArrowRight') lbStep(1);
+      if (lbOpen && e.key === 'ArrowLeft') lbStep(-1);
+    });
+  })();
+
+  /* ============ REVIEWS STACK LOGIC ============ */
+  (function initReviewsStack(){
+    var container = qs('#revStackContainer');
+    var prevBtn   = qs('#revPrev');
+    var nextBtn   = qs('#revNext');
+    if (!container) return;
+
+    /* ---- МАССИВ ОТЗЫВОВ ---- */
+    var reviewsData = [
+      {
+        photo : '', 
+        name  : 'Анастасия', 
+        role  : 'SMM-Специалист',
+        text  : 'Безумно Рада была поработать и думаю, что наше сотрудничество на этом не закончится, за время работы мы успели поработать над несколькими моими проектами из разных ниш и получить общее видение в этой сфере. Безумно благодарна за ответственность и пунктуальность, за коммуникацию и терпеливость - это то, что помогало не только эффективно работать, но и сказывалось на качестве выполненной работы. Анастасия человек открытый, творческий и внимательный к деталям, это помогало в монтаже и дизайне, делая его действительно уникальным и «брендовым»'
+      },
+      {
+        photo : '',
+        name  : 'Амалия',
+        role  : 'Заказчик',
+        text  : 'Очень приятно было с тобой работать! Помимо того, что ты оперативно взялась за работу и сделала всё раньше дедлайнов, так ты еще и четко поняла, какую картинку я хочу. Чувствовалось, что ты не просто выполняешь указания по «ТЗ», а ты максимально заинтересованна в качественном результате — это очень подкупает и хочется дальше работать вместе 😅 еще раз большое спасибо'
+      },
+      {
+        photo : '',
+        name  : 'Дмитрий',
+        role  : 'Главный бармен в ресторане',
+        text  : 'Отличная работа! Дизайнер внимательно выслушал пожелания, предложил интересные идеи и создал стильный, гармоничный дизайн коктейльной карты. Всё выполнено качественно и в срок — рекомендую!'
+      },
+      {
+        photo : '',
+        name  : 'Ирина',
+        role  : 'Селлер на Вайлдберриз',
+        text  : 'Хочу поделиться своим восторгом от работы с Анастасией! Она создала потрясающие карточки для нашего маркетплейса Вайлдберрис. Каждая деталь проработана с большой заботой и вниманием. Не только дизайн удивительный, но и скорость выполнения работы поразила! Анастасия, спасибо за профессионализм и креативность! 🎉🎉'
+      },
+      {
+        photo : '',
+        name  : 'Антон', 
+        role  : 'Продавец Avito',
+        text  : 'Благодарю Анастасию за дизайн карточек для Авито, шрифт в карточках крупный, текст отлично видно на телефоне, дизайн соответствует предмету, советую обращаться 👍'
+      }
+    ];
+
+    /* ---- Создание карточек ---- */
+    function createCards() {
+      container.innerHTML = '';
+      reviewsData.forEach(function(r, index) {
+        var card = document.createElement('div');
+        card.className = 'rev-card';
+        if (index === 0) card.classList.add('active'); // Первая активна
+        
+        card.innerHTML =
+          '<span class="rev-quote-open">\u201C</span>' +
+          '<div class="rev-card-content">' +
+            '<div class="rev-avatar-placeholder"></div>' +
+            '<div class="rev-name">' + r.name + '</div>' +
+            '<div class="rev-role">' + r.role + '</div>' +
+            '<p class="rev-text">' + r.text + '</p>' +
+          '</div>' +
+          '<span class="rev-quote-close">\u201D</span>';
+          
+        container.appendChild(card);
+      });
+    }
+    createCards();
+
+    /* ---- Логика переключения ---- */
+    var currentIndex = 0;
+    var cards = qsa('.rev-card');
+
+    function switchCard(newIndex) {
+      // Зацикливание индекса
+      newIndex = ((newIndex % cards.length) + cards.length) % cards.length;
+      
+      // Обновляем классы
+      cards.forEach(function(card, idx) {
+        if (idx === newIndex) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+      
+      currentIndex = newIndex;
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function(){ switchCard(currentIndex - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function(){ switchCard(currentIndex + 1); });
+
+    // Опционально: автопрокрутка каждые 7 секунд
+    var autoplayTimer = setInterval(function(){
+      switchCard(currentIndex + 1);
+    }, 7000);
+
+    // Останавливаем автоскролл при наведении мыши
+    container.addEventListener('mouseenter', function(){ clearInterval(autoplayTimer); });
+    container.addEventListener('mouseleave', function(){ 
+      autoplayTimer = setInterval(function(){
+        switchCard(currentIndex + 1);
+      }, 7000); 
+    });
+
+  })();
+
+  /* ============ MODAL ============ */
+  var overlay = qs('#modalOverlay'), closeBtn = qs('#modalClose'), form = qs('#requestForm');
+  var successBl = qs('#modalSuccess'), nameIn = qs('#nameInput'), phoneIn = qs('#phoneInput');
+  var consentLb = qs('#consentLabel'), consentCh = qs('#consentCheck');
+  function openModal(){
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open'); setTimeout(function(){ nameIn.focus(); }, 300);
+  }
+  function closeModal(){
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+    setTimeout(function(){
+      form.reset(); form.hidden = false; successBl.hidden = true;
+      phoneIn.classList.remove('error'); consentLb.classList.remove('error');
+      var sb = form.querySelector('.modal-submit'); sb.disabled = false; sb.textContent = 'Отправить заявку';
+    }, 420);
+  }
+  qsa('[data-open-modal]').forEach(function(btn){ btn.addEventListener('click', function(e){ e.preventDefault(); openModal(); }); });
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+  phoneIn.addEventListener('input', function(){ phoneIn.classList.remove('error'); });
+  consentCh.addEventListener('change', function(){ consentLb.classList.remove('error'); });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var okPhone = phoneIn.value.replace(/\D/g,'').length >= 6, okConsent = consentCh.checked;
+    if (!okPhone){ phoneIn.classList.add('error'); }
+    if (!okConsent){ consentLb.classList.add('error'); }
+    if (!okPhone || !okConsent){ return; }
+    var submitBtn = form.querySelector('.modal-submit');
+    var commentVal = form.querySelector('.modal-textarea').value.trim();
+    submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
+    function success(){ form.hidden = true; successBl.hidden = false; setTimeout(closeModal, 2400); }
+    function fail(err){
+      submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку';
+      var msg = (err && err.status ? 'Код ' + err.status + '. ' : '') + (err && err.text ? err.text : 'Неизвестная ошибка');
+      alert('Ошибка EmailJS: ' + msg); console.error('EmailJS error:', err);
+    }
+    if (typeof emailjs === 'undefined'){ submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку'; alert('Библиотека EmailJS не загрузилась.'); return; }
+    emailjs.send(EJ_SERVICE, EJ_TEMPLATE, {
+      name: nameIn.value.trim() || 'Не указано', phone: phoneIn.value.trim(),
+      message: commentVal || 'Без комментария', from_page: 'Главная страница — ' + window.location.href
+    }).then(success, fail);
+  });
+
+  /* ============ COOKIES (LOCALSTORAGE VERSION) ============ */
+  (function initCookies(){
+    var banner = qs('#cookieBanner');
+    var acceptBtn = qs('#cookieAccept');
+    var declineBtn = qs('#cookieDecline');
+    if (!banner) return;
+
+    var STORAGE_KEY = 'site_cookie_consent_v1'; // Уникальный ключ
+
+    function hasConsent(){
+      try {
+        return localStorage.getItem(STORAGE_KEY) !== null;
+      } catch(e){
+        return false;
+      }
+    }
+
+    function saveConsent(type){
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({type:type, date:new Date().toISOString()}));
+      } catch(e){}
+    }
+
+    function showBanner(){
+      banner.classList.add('show');
+      banner.setAttribute('aria-hidden','false');
+    }
+
+    function hideBanner(){
+      banner.classList.remove('show');
+      banner.setAttribute('aria-hidden','true');
+    }
+
+    // Проверяем наличие согласия в LocalStorage
+    // Если его НЕТ — показываем баннер через небольшую задержку
+    if (!hasConsent()) {
+      setTimeout(showBanner, 900);
+    }
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', function(){
+        saveConsent('all');
+        hideBanner();
+      });
+    }
+
+    if (declineBtn) {
+      declineBtn.addEventListener('click', function(){
+        saveConsent('necessary');
+        hideBanner();
+      });
+    }
+  })();
+})();
+</script>
+</body>
+</html>

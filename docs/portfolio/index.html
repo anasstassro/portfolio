@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Портфолио — Анастасия Роженкова</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/cyrillic-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/cyrillic-500-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/cyrillic-600-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/latin-500-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/montserrat@latest/latin-600-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/days-one@latest/cyrillic-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/days-one@latest/latin-400-normal.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root{
+  --bg:#050505;--text:#ffffff;--muted:#cfcfcf;--accent:#ff4d00;
+  --brown:#4d382d;--brown2:#5b4e44;--art:#8a7e73;--gray:#d9d9d9;--line:#242424;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --font-main:'Montserrat',-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --font-head:'Days One','Montserrat',-apple-system,'Helvetica Neue',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--text);font-family:var(--font-main);font-weight:400;font-size:15px;overflow-x:hidden}
+body.lb-open{overflow:hidden}
+
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:#2e2e2e;border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+a{color:inherit;text-decoration:none}ul{list-style:none}
+button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer}
+img,svg{display:block}.container{max-width:1160px;margin:0 auto;padding:0 24px;width:100%}
+
+@media (pointer:fine){*{cursor:none !important}}
+.cursor-dot{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px rgba(255,77,0,.6);opacity:0;transition:opacity .3s ease,width .3s var(--ease),height .3s var(--ease),background .3s ease;will-change:transform}
+.cursor-dot.on{opacity:1}
+.cursor-dot.grow{width:38px;height:38px;background:rgba(255,77,0,.75);box-shadow:0 0 24px rgba(255,77,0,.45)}
+
+.photo{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease;position:absolute;inset:0}
+.photo.loaded{opacity:1}
+
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .9s ease,transform .9s var(--ease);transition-delay:var(--d,0s);will-change:opacity,transform}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important}}
+
+.placeholder{background:var(--brown);border-radius:6px;position:relative;overflow:hidden;min-height:220px;width:100%;transition:transform .5s var(--ease),box-shadow .5s ease,filter .5s ease}
+.placeholder::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);transform:translateX(-130%);transition:transform .9s ease;pointer-events:none}
+.placeholder:hover{transform:translateY(-6px);box-shadow:0 20px 44px rgba(0,0,0,.45);filter:brightness(1.1)}
+.placeholder:hover::after{transform:translateX(130%)}
+
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:box-shadow .4s ease,background .4s ease}
+header.scrolled{background:rgba(3,3,3,.95);box-shadow:0 12px 34px rgba(0,0,0,.55)}
+.header-in{height:62px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nav-links{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.nav-links a{font-size:13px;font-weight:600;color:#f2f2f2;position:relative;padding:6px 0;transition:color .3s ease}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-links a:hover{color:#fff}
+.nav-links a.active{color:var(--accent)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#fff}
+.nav-cta .arr{transition:transform .35s var(--ease)}
+.nav-cta:hover .arr{transform:translate(4px,-4px)}
+
+main{margin-top:62px}
+.section{padding:96px 0 0}
+.page-title{font-family:var(--font-main);font-size:clamp(28px,3.2vw,38px);font-weight:600;letter-spacing:-.01em;margin-bottom:40px}
+
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.intro-text p{font-size:13.5px;line-height:1.75;color:#d9d9d9;margin-bottom:22px}
+.intro-text ul{margin:6px 0 0}
+.intro-text ul li{font-size:13.5px;line-height:1.7;color:#d9d9d9;margin-bottom:12px;position:relative;padding-left:18px}
+.intro-text ul li::before{content:'';position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--art)}
+.intro-images{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:16px}
+.intro-images .placeholder:nth-child(1){grid-column:1;grid-row:1;min-height:180px}
+.intro-images .placeholder:nth-child(2){grid-column:1;grid-row:2;min-height:180px}
+.intro-images .placeholder:nth-child(3){grid-column:2;grid-row:1/3;min-height:100%}
+
+.project{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-bottom:120px}
+.project.centered{align-items:center}
+.project .project-images{order:0}
+.project .project-info{order:1}
+.project.reverse .project-images{order:1}
+.project.reverse .project-info{order:0}
+.project-title{font-family:var(--font-main);font-size:clamp(22px,2.6vw,30px);font-weight:600;letter-spacing:-.01em;line-height:1.25;margin-bottom:28px;color:#fff}
+.project-title .p-num{color:var(--accent);margin-right:10px}
+.project-info p{font-size:13.5px;line-height:1.75;color:#cfcfcf;margin-bottom:22px}
+.project-info p:last-child{margin-bottom:0}
+.project-info b{color:#fff;font-weight:600}
+
+.palette-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:18px 20px;margin-bottom:26px}
+.palette-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--art);margin-bottom:8px}
+.palette-card p{font-size:12.5px !important;line-height:1.65 !important;color:#bdbdbd !important;margin-bottom:12px !important}
+.color-palette{display:flex;gap:10px;flex-wrap:wrap}
+.color-swatch{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.14);transition:transform .3s var(--ease)}
+.color-swatch:hover{transform:scale(1.18)}
+
+.project-images{display:grid;gap:16px}
+.layout-01{grid-template-columns:315px 1fr;grid-template-rows:214px 215px auto}
+.layout-01 .ph-a{grid-column:1;grid-row:1/3;width:315px;height:445px;min-height:0}
+.layout-01 .ph-b{grid-column:2;grid-row:1;min-height:0}
+.layout-01 .ph-c{grid-column:2;grid-row:2;min-height:0}
+.layout-01 .ph-d{grid-column:1/3;grid-row:3;min-height:180px}
+.layout-02{grid-template-columns:1fr 1fr;gap:12px}
+.layout-02 .placeholder{aspect-ratio:1.85/1;min-height:0}
+.layout-03{grid-template-columns:1fr}
+.layout-03 .placeholder{min-height:330px}
+.layout-04{grid-template-columns:1fr 1fr}
+.layout-04 .placeholder{aspect-ratio:1.9/1;min-height:0}
+.layout-05{grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+.layout-05 .col{display:grid;gap:16px}
+.layout-05 .ph-05-1{aspect-ratio:203/301;min-height:0}
+.layout-05 .ph-05-2{aspect-ratio:315/223;min-height:0}
+.layout-05 .ph-05-3{aspect-ratio:315/370;min-height:0}
+
+.posters-intro{max-width:720px;margin-bottom:64px}
+.posters-intro p{font-size:14px;line-height:1.7;color:#e3e3e3;margin-bottom:14px}
+.posters-intro ul{list-style:disc outside;padding-left:22px;margin-bottom:14px}
+.posters-intro ul li{font-size:14px;line-height:1.65;color:#e3e3e3;margin-bottom:8px}
+.posters-intro ul li::marker{color:#e3e3e3}
+.posters-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:64px}
+.posters-grid .p-cell:nth-child(-n+4){margin-bottom:28px}
+.p-cell{display:flex;position:relative}
+.p-cell .poster-ph{width:100%;height:auto;aspect-ratio:315/445;min-height:0}
+.p-cell.quote{align-items:center;justify-content:center;text-align:center;padding:0 12px}
+.p-cell.quote p{font-size:15px;line-height:1.65;color:#f0f0f0}
+
+.sites-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px 24px;margin-bottom:64px}
+.site-card .placeholder{border-radius:14px;aspect-ratio:1.75/1;min-height:0}
+.site-card figcaption{margin-top:16px;font-size:15.5px;line-height:1.5;color:#f0f0f0}
+
+.cta-wrap{text-align:center;padding:20px 0 96px}
+.cta-link{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;position:relative;padding-bottom:6px}
+.cta-link::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.cta-link:hover::after{transform:scaleX(1)}
+.cta-link .arr{transition:transform .35s var(--ease)}
+.cta-link:hover .arr{transform:translate(5px,-5px)}
+
+.fab-widget{position:fixed;right:max(28px, calc((100vw - 1160px)/2 + 24px));bottom:28px;z-index:450;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.fab-panel{width:260px;background:#191919;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:18px;box-shadow:0 24px 60px rgba(0,0,0,.55);opacity:0;visibility:hidden;transform:translateY(14px) scale(.96);transform-origin:bottom right;transition:opacity .35s ease,transform .35s var(--ease),visibility 0s linear .35s}
+.fab-panel.open{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s var(--ease)}
+.fab-panel-title{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--art);margin-bottom:12px}
+.fab-tel{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.05);font-size:13px;font-weight:600;color:#fff;margin-bottom:10px;transition:background .3s ease,color .3s ease,transform .3s var(--ease)}
+.fab-tel:hover{background:rgba(255,77,0,.14);color:var(--accent);transform:translateX(4px)}
+.fab-tel svg{flex:none;color:var(--accent)}
+.fab-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--accent);color:#fff;font-family:var(--font-main);font-size:13px;font-weight:600;transition:transform .3s var(--ease),box-shadow .3s ease,background .3s ease}
+.fab-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,77,0,.35);background:#ff5c1a}
+.fab-toggle{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;border:none;cursor:pointer;box-shadow:0 14px 34px rgba(255,77,0,.4);position:relative;transition:transform .35s var(--ease)}
+.fab-toggle:hover{transform:scale(1.08)}
+.fab-toggle::before{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,77,0,.55);animation:fabPulse 2.4s ease-out infinite}
+@keyframes fabPulse{0%{transform:scale(1);opacity:.9}70%{transform:scale(1.55);opacity:0}100%{transform:scale(1.55);opacity:0}}
+.fab-toggle .ic-close{display:none}
+.fab-toggle.open .ic-phone{display:none}
+.fab-toggle.open .ic-close{display:block}
+.fab-toggle.open::before{animation:none;opacity:0}
+
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(5,5,5,.45);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
+.modal-overlay.open{opacity:1;visibility:visible;transition:opacity .4s ease}
+.modal-close{position:absolute;top:22px;right:26px;width:40px;height:40px;display:grid;place-items:center;color:#fff;border-radius:50%;transition:transform .35s var(--ease),color .3s ease}
+.modal-close:hover{transform:rotate(90deg) scale(1.15);color:var(--accent)}
+.modal-panel{width:424px;max-width:100%;max-height:calc(100vh - 48px);overflow-y:auto;background:#191919;border-radius:16px;padding:58px 52px 50px;transform:translateY(30px) scale(.94);transition:transform .45s var(--ease);box-shadow:0 40px 90px rgba(0,0,0,.55)}
+.modal-overlay.open .modal-panel{transform:translateY(0) scale(1)}
+.modal-title{font-size:26px;font-weight:600;letter-spacing:-.01em;text-align:center;color:#fff;margin-bottom:46px}
+.modal-input{width:100%;background:transparent;border:1px solid #f2f2f2;border-radius:4px;color:#fff;font:inherit;font-size:14px;padding:10px 13px;margin-bottom:18px;outline:none;transition:border-color .3s ease,box-shadow .3s ease}
+.modal-input::placeholder{color:#f0f0f0;opacity:1}
+.modal-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,0,.18)}
+.modal-textarea{min-height:128px;resize:none}
+.modal-input.error{border-color:var(--accent);animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.modal-consent{display:flex;align-items:flex-start;gap:11px;color:#fff;font-size:15px;line-height:1.45;margin:8px 0 36px;position:relative}
+.modal-consent input{position:absolute;opacity:0;width:0;height:0}
+.consent-box{flex:none;width:19px;height:19px;margin-top:2px;border:1px solid #f2f2f2;border-radius:2px;position:relative;transition:background .25s ease,border-color .25s ease,transform .25s var(--ease)}
+.consent-box:active{transform:scale(.88)}
+.consent-box::after{content:'';position:absolute;left:5px;top:2px;width:5px;height:10px;border:solid #191919;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--ease)}
+.modal-consent input:checked + .consent-box{background:var(--accent);border-color:var(--accent)}
+.modal-consent input:checked + .consent-box::after{transform:rotate(45deg) scale(1);border-color:#fff}
+.modal-consent.error .consent-box{border-color:var(--accent);animation:shake .4s ease}
+.modal-submit{width:100%;background:#d9d9d9;color:#191919;border:none;border-radius:6px;padding:11px 16px;font-size:15px;font-weight:600;transition:background .3s ease,transform .3s var(--ease),box-shadow .3s ease}
+.modal-submit:hover{background:#ffffff;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.modal-submit:disabled{opacity:.6;cursor:not-allowed}
+.modal-success{text-align:center;padding:46px 0 40px;color:#fff}
+.modal-success p{font-size:24px;font-weight:600;margin-bottom:12px}
+.modal-success span{font-size:13px;color:var(--muted);line-height:1.5}
+
+.lightbox{position:fixed;inset:0;z-index:600;background:rgba(5,5,5,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.lightbox.open{opacity:1;visibility:visible;transition:opacity .35s ease}
+.lb-stage{display:flex;align-items:center;justify-content:center;transform:scale(.94);transition:transform .35s var(--ease)}
+.lightbox.open .lb-stage{transform:scale(1)}
+.lb-stage img{max-width:90vw;max-height:86vh;object-fit:contain;border-radius:8px;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.lb-close{position:absolute;top:22px;right:26px;width:44px;height:44px;display:grid;place-items:center;color:#fff;border-radius:50%;transition:transform .35s var(--ease),color .3s ease}
+.lb-close:hover{transform:rotate(90deg) scale(1.15);color:var(--accent)}
+.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;display:grid;place-items:center;color:#fff;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);transition:background .3s ease,color .3s ease,transform .3s var(--ease)}
+.lb-prev{left:26px}.lb-next{right:26px}
+.lb-prev:hover,.lb-next:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-50%) scale(1.08)}
+.lb-counter{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.14em;color:var(--muted)}
+
+footer{padding:64px 0 46px;border-top:1px solid var(--line)}
+.footer-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr 1.15fr;gap:40px}
+.f-title{font-size:12px;font-weight:600;margin-bottom:14px;line-height:1.4}
+.f-text{font-size:12px;line-height:1.55;color:#d6d6d6;max-width:220px}
+.f-links li{margin-bottom:9px}
+.f-links a{font-size:12px;color:#d6d6d6;transition:color .3s ease,padding-left .3s ease}
+.f-links a:hover{color:var(--accent);padding-left:6px}
+.f-socials{display:flex;gap:10px;margin-top:16px}
+.f-socials a{width:34px;height:34px;border-radius:50%;background:#e9e9e9;color:#111;display:grid;place-items:center;transition:transform .4s var(--ease),background .3s ease,color .3s ease}
+.f-socials a:hover{transform:translateY(-4px) rotate(-12deg);background:var(--accent);color:#fff}
+
+@media (max-width:1024px){
+  .intro-grid,.project{grid-template-columns:1fr;gap:36px}
+  .project.reverse .project-images{order:0}
+  .project.reverse .project-info{order:1}
+  .project{margin-bottom:80px}
+  .posters-grid{grid-template-columns:repeat(2,1fr)}
+  .posters-grid .p-cell:nth-child(-n+4){margin-bottom:0}
+  .posters-intro{max-width:100%}
+  .sites-grid{grid-template-columns:1fr;gap:40px}
+  .site-card .placeholder{aspect-ratio:16/9}
+  .footer-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .nav-links{gap:18px}
+  .nav-links a{font-size:12px}
+  .section{padding-top:64px}
+  .layout-01{grid-template-columns:1fr;grid-template-rows:auto}
+  .layout-01 .ph-a,.layout-01 .ph-b,.layout-01 .ph-c,.layout-01 .ph-d{grid-column:1;grid-row:auto}
+  .layout-01 .ph-a{width:100%;height:auto;aspect-ratio:315/445}
+  .layout-05{grid-template-columns:1fr;align-items:start}
+  .posters-grid{gap:12px}
+  .p-cell.quote{padding:24px 8px}
+  .lb-prev{left:10px}.lb-next{right:10px}
+  .fab-widget{right:16px;bottom:16px}
+  .modal-panel{padding:44px 26px 36px}
+  .modal-close{top:12px;right:12px}
+  .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header id="topNav">
+  <div class="container header-in">
+    <nav class="nav-links" id="navLinks">
+      <a href="../index.html">Главная</a>
+      <a href="#polygraphy" class="active">Полиграфия</a>
+      <a href="#posters">Постеры</a>
+      <a href="#sites">Сайты</a>
+    </nav>
+    <a href="../index.html#contacts" class="nav-cta">Обсудить проект
+      <svg class="arr" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</header>
+
+<main>
+<section class="section" id="polygraphy">
+  <div class="container">
+    <div class="intro-grid stagger">
+      <div class="intro-text">
+        <h1 class="page-title">Полиграфия</h1>
+        <p>Печатная продукция — это осязаемый инструмент вашего бренда. Разрабатываю дизайн для физических носителей, я учитываю все особенности типографского производства: цветопередачу, плотность материалов и стандарты обрезки макетов.</p>
+        <p>Результат моей работы — полностью готовые к производству файлы, которые примет любая типография без правок и доплат.</p>
+        <p>Примеры моих проектов в сфере полиграфии:</p>
+        <ul>
+          <li>Персональные и корпоративные визитки.</li>
+          <li>Рекламные баннеры и постеры любого формата.</li>
+          <li>Атмосферные пригласительные на свадьбы и мероприятия.</li>
+        </ul>
+      </div>
+      <div class="intro-images">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-intro-01.jpg" alt="Полиграфия пример 1"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-intro-02.jpg" alt="Полиграфия пример 2"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-intro-03.jpg" alt="Полиграфия пример 3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="project reveal">
+      <div class="project-images layout-01 stagger">
+        <div class="placeholder ph-a"><img class="photo" loading="lazy" src="img/poly-01-01.jpg" alt="Плакат"></div>
+        <div class="placeholder ph-b"><img class="photo" loading="lazy" src="img/poly-01-02.jpg" alt="Билет 1"></div>
+        <div class="placeholder ph-c"><img class="photo" loading="lazy" src="img/poly-01-03.jpg" alt="Билет 2"></div>
+        <div class="placeholder ph-d"><img class="photo" loading="lazy" src="img/poly-01-04.jpg" alt="Плакат и билеты широко"></div>
+      </div>
+      <div class="project-info">
+        <h2 class="project-title"><span class="p-num">01 \</span>Плакат и билеты</h2>
+        <div class="palette-card">
+          <span class="palette-label">Цвета проекта</span>
+          <p>Слоновая кость [#DFD1C4], акцентный красный [#C54343] и темный графит [#37343B].</p>
+          <div class="color-palette">
+            <div class="color-swatch" style="background:#DFD1C4"></div>
+            <div class="color-swatch" style="background:#C54343"></div>
+            <div class="color-swatch" style="background:#37343B"></div>
+          </div>
+        </div>
+        <p>Для ретро-вечеринки в центре Калининграда я разработала яркую афишу и входные билеты в стиле 90-х.</p>
+        <p><b>Пожелания клиента:</b> Яркий и броский дизайн в стиле 90-х с насыщенными акцентными цветами.</p>
+        <p><b>Задача:</b> Разработать афишу и входные билеты для ретро-вечеринки в центре Калининграда.</p>
+        <p><b>Процесс:</b> В ходе работы улучшила фон макетов, добавив на афишу и билеты различные абстрактные графические объекты для придания динамики.</p>
+        <p><b>Результат:</b> Стильный комплект полиграфии, полностью готовый к печати, созданный всего за 2 дня с учетом всех правок.</p>
+      </div>
+    </div>
+
+    <div class="project reverse reveal">
+      <div class="project-images layout-02 stagger">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-01.jpg" alt="Карта мафии 1"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-02.jpg" alt="Карта мафии 2"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-03.jpg" alt="Карта мафии 3"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-04.jpg" alt="Карта мафии 4"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-05.jpg" alt="Карта мафии 5"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-06.jpg" alt="Карта мафии 6"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-07.jpg" alt="Карта мафии 7"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-02-08.jpg" alt="Карта мафии 8"></div>
+      </div>
+      <div class="project-info">
+        <h2 class="project-title"><span class="p-num">02 \</span>Карты для Мафии</h2>
+        <div class="palette-card">
+          <span class="palette-label">Цвета проекта</span>
+          <p>У игровых карт: черный [#070101], красный [#900000] и золотой [#D4AB11]. У доп карт: черный [#000000], рыжий [#C77522], серый [#B4B4B4].</p>
+          <div class="color-palette">
+            <div class="color-swatch" style="background:#070101"></div>
+            <div class="color-swatch" style="background:#900000"></div>
+            <div class="color-swatch" style="background:#D4AB11"></div>
+            <div class="color-swatch" style="background:#000000"></div>
+            <div class="color-swatch" style="background:#C77522"></div>
+            <div class="color-swatch" style="background:#B4B4B4"></div>
+          </div>
+        </div>
+        <p><b>Пожелания клиента:</b> Очень контрастные и четкие игровые карты. Название клуба «Бембин» образовано из игровых ников трех основателей, но созвучно с именем Бемби из мультфильма, поэтому визуальную концепцию решили строить вокруг этого образа. У клиента было несколько идей, включая отрисовку разных человечков на картах.</p>
+        <p><b>Задача:</b> Разработать с нуля уникальный и готовый к печати дизайн 22 игровых карточек для клуба спортивной мафии.</p>
+        <p><b>Процесс:</b> Проект потребовал глубокого погружения. За семь дней работы мы провели несколько десятков созвонов, подробных обсуждений и дискуссий с клиентом, детально прорабатывая каждого персонажа и общую графику макетов.</p>
+        <p><b>Результат:</b> Полностью готовая и проработанная колода из 22 контрастных карточек для игры, которая идеально передает заложенный смысл и полностью устроила заказчика.</p>
+      </div>
+    </div>
+
+    <div class="project reveal">
+      <div class="project-images layout-03 stagger">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-03-01.jpg" alt="Меню ресторана 1"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-03-02.jpg" alt="Меню ресторана 2"></div>
+      </div>
+      <div class="project-info">
+        <h2 class="project-title"><span class="p-num">03 \</span>Меню в ресторан</h2>
+        <div class="palette-card">
+          <span class="palette-label">Цвета проекта</span>
+          <p>Слоновая кость [#DFD1C4], акцентный красный [#C54343] и темный графит [#37343B].</p>
+          <div class="color-palette">
+            <div class="color-swatch" style="background:#DFD1C4"></div>
+            <div class="color-swatch" style="background:#C54343"></div>
+            <div class="color-swatch" style="background:#37343B"></div>
+          </div>
+        </div>
+        <p><b>Пожелания клиента:</b> Стильное и премиальное обновление меню для ресторана при пятизвездочном отеле на берегу Балтийского моря на основе уже готового концепта и техзадания.</p>
+        <p><b>Задача:</b> Адаптировать дизайн под новые требования, восстановить утраченную графику и подготовить к печати два формата меню: А3 и компактный А4, складывающиеся в три раза (евробуклет).</p>
+        <p><b>Процесс:</b> Из-за отсутствия исходников в хорошем качестве я с нуля перерисовала всех морских обитателей для заднего фона. Также в ходе работы оперативно внесла большой объем правок, связанных с актуализацией цен и изменением названий позиций меню.</p>
+        <p><b>Результат:</b> Два полностью готовых к производству формата меню, которые идеально подчеркивают статус пятизвездочного отеля и удобны в использовании для гостей ресторана.</p>
+      </div>
+    </div>
+
+    <div class="project reverse reveal">
+      <div class="project-images layout-04 stagger">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-04-01.jpg" alt="Визитка 1"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-04-02.jpg" alt="Визитка 2"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-04-03.jpg" alt="Визитка 3"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-04-04.jpg" alt="Визитка 4"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-04-05.jpg" alt="Визитка 5"></div>
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/poly-04-06.jpg" alt="Визитка 6"></div>
+      </div>
+      <div class="project-info">
+        <h2 class="project-title"><span class="p-num">04 \</span>Визитки</h2>
+        <div class="palette-card">
+          <span class="palette-label">Цвета проекта</span>
+          <p>Нежный белый [#F4ECD2], фисташковый [#A39D32] и [#100F0F] для контраста.</p>
+          <div class="color-palette">
+            <div class="color-swatch" style="background:#F4ECD2"></div>
+            <div class="color-swatch" style="background:#A39D32"></div>
+            <div class="color-swatch" style="background:#100F0F"></div>
+          </div>
+        </div>
+        <p><b>Задача:</b> Сделать просто, лаконично, но «не как у всех». У клиента был минимум текстовой информации, поэтому ставка делалась на воздух, цвет и оригинальные шрифты.</p>
+        <p><b>Процесс:</b> Разработала 5 концептуальных вариантов. Клиенту настолько понравился подход, что он выбрал сразу два макета для разных задач.</p>
+        <p><b>Пожелания:</b> Справиться за неделю, но проект был готов уже через три дня.</p>
+        <p><b>Результат:</b> Два готовых к печати стильных макета и полностью довольный клиент.</p>
+      </div>
+    </div>
+
+    <div class="project centered reveal">
+      <div class="project-images layout-05 stagger">
+        <div class="col">
+          <div class="placeholder ph-05-1"><img class="photo" loading="lazy" src="img/poly-05-01.jpg" alt="Пригласительное"></div>
+        </div>
+        <div class="col">
+          <div class="placeholder ph-05-2"><img class="photo" loading="lazy" src="img/poly-05-02.jpg" alt="Сертификат 1"></div>
+          <div class="placeholder ph-05-3"><img class="photo" loading="lazy" src="img/poly-05-03.jpg" alt="Сертификат 2"></div>
+        </div>
+      </div>
+      <div class="project-info">
+        <h2 class="project-title"><span class="p-num">05 \</span>Сертификаты и пригласительные</h2>
+        <p>Помимо этого, у меня за плечами множество других рабочих проектов, которые нет смысла описывать детально — дизайн должен говорить сам за себя. Предлагаю вам просто посмотреть на некоторые из них, чтобы оценить мой подход к верстке, цвету и композиции.</p>
+      </div>
+    </div>
+
+    <div class="cta-wrap reveal">
+      <a href="../index.html#contacts" class="cta-link">Обсудить проект
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="posters">
+  <div class="container">
+    <h2 class="page-title reveal">Постеры</h2>
+    <div class="posters-intro reveal">
+      <p>— это крупноформатная графика, которая мгновенно привлекает внимание и передает нужный посыл. Они используются как в бизнесе, так и в дизайне пространств.<br>Я разрабатываю дизайн постеров для любых задач:</p>
+      <ul>
+        <li>Цифровые и интерьерные: стильные плакаты с мотивационными надписями, цитатами или графикой для оформления интерьера или экранов.</li>
+        <li>Рекламные: коммерческие плакаты для продвижения продуктов, брендов и оформления витрин.</li>
+        <li>Афиши: яркие постеры для анонса концертов, фестивалей и кино.</li>
+      </ul>
+      <p>Каждый макет создается с учетом правил композиции и полностью подготавливается к широкоформатной печати или цифровому использованию.</p>
+    </div>
+    <div class="posters-grid stagger">
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-01.jpg" alt="Постер 1"></div></div>
+      <div class="p-cell quote"><p>“Постеры, сделанные в процессе обучения в&nbsp;онлайн-школе”</p></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-02.jpg" alt="Постер 2"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-03.jpg" alt="Постер 3"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-04.jpg" alt="Постер 4"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-05.jpg" alt="Постер 5"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-06.jpg" alt="Постер 6"></div></div>
+      <div class="p-cell quote"><p>“Постеры, созданные для клиентов \ друзей \ по&nbsp;собственной инициативе”</p></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-07.jpg" alt="Постер 7"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-08.jpg" alt="Постер 8"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-09.jpg" alt="Постер 9"></div></div>
+      <div class="p-cell"><div class="placeholder poster-ph"><img class="photo" loading="lazy" src="img/poster-10.jpg" alt="Постер 10"></div></div>
+    </div>
+    <div class="cta-wrap reveal">
+      <a href="../index.html#contacts" class="cta-link">Обсудить проект
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sites">
+  <div class="container">
+    <h2 class="page-title reveal">Сайты</h2>
+    <div class="sites-grid stagger">
+      <figure class="site-card">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/site-01.jpg" alt="Кофейня в Калининграде"></div>
+        <figcaption>Кофейня в калининграде</figcaption>
+      </figure>
+      <figure class="site-card">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/site-02.jpg" alt="Многостраничник продажа обтирочной ветоши"></div>
+        <figcaption>многостраничник продажа обтирочной ветоши</figcaption>
+      </figure>
+      <figure class="site-card">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/site-03.jpg" alt="Лендинг репетитора по математике"></div>
+        <figcaption>Лендинг репетитора по математике к ОГЭ\ЕГЭ</figcaption>
+      </figure>
+      <figure class="site-card">
+        <div class="placeholder"><img class="photo" loading="lazy" src="img/site-04.jpg" alt="Лендинг аренда помещений"></div>
+        <figcaption>Лендинг аренда помещений</figcaption>
+      </figure>
+    </div>
+    <div class="cta-wrap reveal">
+      <a href="../index.html#contacts" class="cta-link">Обсудить проект
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M9 7h8v8" stroke="#ff4d00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div><div class="f-title">Дизайнер<br>Роженкова Анастасия</div><p class="f-text">Дизайн работает тогда, когда он сделан с душой, и по всем правилам</p></div>
+    <div><div class="f-title">Блоки</div><ul class="f-links"><li><a href="../index.html#works">Портфолио</a></li><li><a href="../index.html#about">Обо мне</a></li><li><a href="../index.html#steps">Этапы работы</a></li><li><a href="../index.html#price">Прайс лист</a></li><li><a href="../index.html#faq">Вопрос-ответ</a></li><li><a href="../index.html#contacts">Контакты</a></li></ul></div>
+    <div><div class="f-title">Контакты</div><p class="f-text">г. Калининград,<br>ул. Балтийская, д. 12<br><a href="tel:+79062171530" style="color:#d6d6d6;transition:color .3s">+7 (906) 217 15 30</a></p></div>
+    <div><div class="f-title">© 2026 Все права защищены</div>
+      <div class="f-socials">
+        <a href="https://t.me/+79062171530" target="_blank" rel="noopener" aria-label="Telegram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></a>
+        <a href="tel:+79062171530" aria-label="Телефон"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.5 2.9 3.8 5.2 6.7 6.7l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.4.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1 .2 2.3.6 3.4.1.4 0 .8-.2 1.1l-2.1 2.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="fab-widget" id="fabWidget">
+  <div class="fab-panel" id="fabPanel">
+    <div class="fab-panel-title">Связаться со мной</div>
+    <a class="fab-tel" href="tel:+79062171530">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.5 2.9 3.8 5.2 6.7 6.7l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.4.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1 .2 2.3.6 3.4.1.4 0 .8-.2 1.1l-2.1 2.3z"/></svg>
+      +7 (906) 217-15-30
+    </a>
+    <button class="fab-btn" type="button" data-open-modal>Оставить заявку</button>
+  </div>
+  <button class="fab-toggle" id="fab" type="button" aria-expanded="false" aria-label="Контакты">
+    <svg class="ic-phone" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.5 2.9 3.8 5.2 6.7 6.7l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.4.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1 .2 2.3.6 3.4.1.4 0 .8-.2 1.1l-2.1 2.3z"/></svg>
+    <svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 class="modal-title" id="modalTitle">Оставьте заявку</h3>
+    <form id="requestForm" novalidate>
+      <input class="modal-input" type="text" name="name" id="nameInput" placeholder="Имя" autocomplete="name">
+      <input class="modal-input" type="tel" name="phone" id="phoneInput" placeholder="Телефон*" autocomplete="tel">
+      <textarea class="modal-input modal-textarea" name="message" placeholder="Комментарий"></textarea>
+      <label class="modal-consent" id="consentLabel">
+        <input type="checkbox" id="consentCheck">
+        <span class="consent-box"></span>
+        <span>Я согласен(-на) на обработку персональных данных</span>
+      </label>
+      <button class="modal-submit" type="submit">Отправить заявку</button>
+    </form>
+    <div class="modal-success" id="modalSuccess" hidden>
+      <p>Заявка отправлена!</p>
+      <span>Спасибо! Я свяжусь с вами в ближайшее время</span>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Закрыть">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+  <button class="lb-prev" id="lbPrev" type="button" aria-label="Предыдущее фото">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <figure class="lb-stage"><img id="lbImg" src="" alt=""></figure>
+  <button class="lb-next" id="lbNext" type="button" aria-label="Следующее фото">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var qs = function(s){ return document.querySelector(s); };
+  var qsa = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  /* ---------- EmailJS: ВСТАВЬ СЮДА СВОИ КЛЮЧИ ---------- */
+  emailjs.init({ publicKey: 'x4cBksQBFri5OGsEY' });
+  var EJ_SERVICE  = 'service_g23p1wp';
+  var EJ_TEMPLATE = 'template_qis7v21';
+
+  if (window.matchMedia && window.matchMedia('(pointer:fine)').matches){
+    var cur = document.createElement('div');
+    cur.className = 'cursor-dot';
+    document.body.appendChild(cur);
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var cx = mx, cy = my;
+    var growSel = 'a, button, .placeholder, .site-card, .p-cell';
+    window.addEventListener('mousemove', function(e){ mx = e.clientX; my = e.clientY; cur.classList.add('on'); }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', function(){ cur.classList.remove('on'); });
+    window.addEventListener('blur', function(){ cur.classList.remove('on'); });
+    document.addEventListener('mouseover', function(e){
+      var hit = e.target && e.target.closest ? e.target.closest(growSel) : null;
+      cur.classList.toggle('grow', !!hit);
+    });
+    (function curLoop(){
+      cx += (mx - cx) * 0.22;
+      cy += (my - cy) * 0.22;
+      cur.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0) translate(-50%,-50%)';
+      requestAnimationFrame(curLoop);
+    })();
+  }
+
+  qsa('img.photo').forEach(function(img){
+    function ok(){ img.classList.add('loaded'); }
+    if (img.complete && img.naturalWidth > 0){ ok(); }
+    img.addEventListener('load', ok);
+  });
+
+  qsa('.stagger').forEach(function(box){
+    Array.prototype.slice.call(box.children).forEach(function(child, idx){
+      child.style.setProperty('--d', (idx * 0.09) + 's');
+      child.classList.add('reveal');
+    });
+  });
+
+  var revealEls = qsa('.reveal');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else { revealEls.forEach(function(el){ el.classList.add('in'); }); }
+
+  var headerEl = qs('#topNav');
+  var spySections = qsa('main section[id]');
+  var spyLinks = qsa('.nav-links a[href^="#"]');
+  var ticking = false;
+
+  function updateSpy(){
+    var current = spySections.length ? spySections[0].id : '';
+    spySections.forEach(function(sec){
+      if (sec.getBoundingClientRect().top <= 200) current = sec.id;
+    });
+    spyLinks.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var sy = window.scrollY || window.pageYOffset;
+      headerEl.classList.toggle('scrolled', sy > 10);
+      updateSpy();
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var lb = qs('#lightbox');
+  var lbImg = qs('#lbImg');
+  var lbCounter = qs('#lbCounter');
+  var lbItems = [];
+  qsa('.placeholder').forEach(function(ph){
+    var im = ph.querySelector('img.photo');
+    if (!im) return;
+    lbItems.push(im);
+    ph.addEventListener('click', function(){
+      if (im.naturalWidth > 0) openLb(lbItems.indexOf(im));
+    });
+  });
+  var lbIndex = 0;
+  function showLb(){
+    var im = lbItems[lbIndex];
+    lbImg.src = im.src;
+    lbImg.alt = im.alt;
+    lbCounter.textContent = (lbIndex + 1) + ' / ' + lbItems.length;
+  }
+  function openLb(i){
+    lbIndex = i;
+    showLb();
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden','false');
+    document.body.classList.add('lb-open');
+  }
+  function closeLb(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lb-open');
+  }
+  function lbStep(dir){
+    lbIndex = (lbIndex + dir + lbItems.length) % lbItems.length;
+    showLb();
+  }
+  qs('#lbClose').addEventListener('click', closeLb);
+  qs('#lbPrev').addEventListener('click', function(){ lbStep(-1); });
+  qs('#lbNext').addEventListener('click', function(){ lbStep(1); });
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
+
+  var fab = qs('#fab');
+  var fabPanel = qs('#fabPanel');
+  function fabClose(){
+    fabPanel.classList.remove('open');
+    fab.classList.remove('open');
+    fab.setAttribute('aria-expanded','false');
+  }
+  fab.addEventListener('click', function(){
+    var isOpen = fabPanel.classList.toggle('open');
+    fab.classList.toggle('open', isOpen);
+    fab.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!e.target.closest('#fabWidget')) fabClose();
+  });
+
+  var overlay   = qs('#modalOverlay');
+  var closeBtn  = qs('#modalClose');
+  var form      = qs('#requestForm');
+  var successBl = qs('#modalSuccess');
+  var nameIn    = qs('#nameInput');
+  var phoneIn   = qs('#phoneInput');
+  var consentLb = qs('#consentLabel');
+  var consentCh = qs('#consentCheck');
+
+  function openModal(){
+    fabClose();
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.classList.add('lb-open');
+    setTimeout(function(){ nameIn.focus(); }, 300);
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lb-open');
+    setTimeout(function(){
+      form.reset();
+      form.hidden = false;
+      successBl.hidden = true;
+      phoneIn.classList.remove('error');
+      consentLb.classList.remove('error');
+      var sb = form.querySelector('.modal-submit');
+      sb.disabled = false;
+      sb.textContent = 'Отправить заявку';
+    }, 420);
+  }
+
+  qsa('[data-open-modal], .cta-link, .nav-cta').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){
+      if (overlay.classList.contains('open')) closeModal();
+      else if (lb.classList.contains('open')) closeLb();
+    }
+    if (lb.classList.contains('open')){
+      if (e.key === 'ArrowRight') lbStep(1);
+      if (e.key === 'ArrowLeft') lbStep(-1);
+    }
+  });
+
+  phoneIn.addEventListener('input', function(){ phoneIn.classList.remove('error'); });
+  consentCh.addEventListener('change', function(){ consentLb.classList.remove('error'); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var okPhone = phoneIn.value.replace(/\D/g,'').length >= 6;
+    var okConsent = consentCh.checked;
+    if (!okPhone){ phoneIn.classList.add('error'); }
+    if (!okConsent){ consentLb.classList.add('error'); }
+    if (!okPhone || !okConsent){ return; }
+
+    var submitBtn = form.querySelector('.modal-submit');
+    var commentVal = form.querySelector('.modal-textarea').value.trim();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем...';
+
+    function success(){
+      form.hidden = true;
+      successBl.hidden = false;
+      setTimeout(closeModal, 2400);
+    }
+    function fail(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить заявку';
+      alert('Не удалось отправить заявку. Проверь интернет или позвони мне: +7 (906) 217-15-30');
+    }
+    if (typeof emailjs === 'undefined'){ fail(); return; }
+
+    emailjs.send(EJ_SERVICE, EJ_TEMPLATE, {
+      name: nameIn.value.trim() || 'Не указано',
+      phone: phoneIn.value.trim(),
+      message: commentVal || 'Без комментария',
+      from_page: 'Портфолио — ' + window.location.href
+    }).then(success, fail);
+  });
+})();
+</script>
+</body>
+</html>
